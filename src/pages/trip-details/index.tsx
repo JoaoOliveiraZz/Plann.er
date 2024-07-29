@@ -2,14 +2,28 @@ import {
   Calendar,
   CircleCheck,
   CircleDashed,
+  Clock,
   Link2,
   MapPin,
   Plus,
   Settings2,
+  Tag,
   UserCog,
+  X,
 } from "lucide-react";
+import { useState } from "react";
 
 export function TripDetailsPage() {
+  const [addNewActivityModal, setAddNewActivityModal] = useState(false);
+  const [addNewLinkModal, setAddNewLinkModal] = useState(false);
+
+  function toggleAddNewActivityModal() {
+    setAddNewActivityModal(!addNewActivityModal);
+  }
+
+  function toggleAddNewLinkModal(){
+    setAddNewLinkModal(!addNewLinkModal);
+  }
   return (
     <div className="max-w-6xl px-6 mx-auto py-10 space-y-8">
       <div className="rounded-xl bg-zinc-900 h-16 flex items-center justify-between px-4 shadow-shape">
@@ -28,11 +42,11 @@ export function TripDetailsPage() {
           </button>
         </div>
       </div>
-      <main className="grid grid-cols-2 gap-16 px-6">
+      <main className="flex gap-16 px-6">
         <div className="flex-1 space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-zinc-50 text-3xl font-semibold">Atividades</h2>
-            <button className="flex items-center gap-2 bg-lime-300 text-lime-950 rounded-lg px-5 py-2">
+            <button onClick={toggleAddNewActivityModal} className="flex items-center gap-2 bg-lime-300 text-lime-950 rounded-lg px-5 py-2">
               <Plus size={20} className="text-lime-950" />
               Cadastrar atividade
             </button>
@@ -116,7 +130,10 @@ export function TripDetailsPage() {
                 </div>
                 <Link2 className="size-5 text-zinc-400" />
               </div>
-              <button className="flex items-center justify-center h-11 w-full gap-1.5 bg-zinc-800 rounded-lg text-zinc-200 px-5 py-2">
+              <button 
+                className="flex items-center justify-center h-11 w-full gap-1.5 bg-zinc-800 rounded-lg text-zinc-200 px-5 py-2"
+                onClick={toggleAddNewLinkModal}  
+              >
                 <Plus className="size-5" />
                 Cadastrar novo link
               </button>
@@ -124,9 +141,7 @@ export function TripDetailsPage() {
           </div>
           <div className="h-px bg-zinc-800 w-full" />
           <div className="space-y-6">
-            <h2 className="text-zinc-50 text-xl font-semibold">
-              Convidados
-            </h2>
+            <h2 className="text-zinc-50 text-xl font-semibold">Convidados</h2>
             <div className="space-y-5">
               <div className="flex gap-14 items-center">
                 <div className="flex flex-col flex-1 h-12 overflow-x-clip">
@@ -146,7 +161,7 @@ export function TripDetailsPage() {
                 </div>
                 <CircleDashed className="size-5 text-zinc-400" />
               </div>
-              
+
               <button className="flex items-center justify-center h-11 w-full gap-1.5 bg-zinc-800 rounded-lg text-zinc-200 px-5 py-2">
                 <UserCog className="size-5" />
                 Gerenciar convidados
@@ -155,6 +170,94 @@ export function TripDetailsPage() {
           </div>
         </div>
       </main>
+      {addNewActivityModal && (<div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+        <div className="w-[540px] h-72 px-6 py-5 bg-zinc-900 rounded-xl space-y-5">
+          <header>
+            <div className="w-full flex items-center justify-between">
+              <h2 className="text-white text-lg font-semibold">
+                Confirmar criação da viagem
+              </h2>
+              <button onClick={toggleAddNewActivityModal}>
+                <X size={20} className="text-zinc-400" />
+              </button>
+            </div>
+            <span className="text-zinc-400 text-sm">
+              Todos convidados podem visualizar as atividades.
+            </span>
+          </header>
+          <div className="space-y-2">
+            <div className="w-full h-14 bg-zinc-950 flex items-center px-4 py-2.5 gap-2.5 rounded-lg">
+              <Tag className="size-5 text-zinc-400" />
+              <input
+                type="text"
+                placeholder="Qual a atividade?"
+                className="text-zinc-400 outline-none bg-transparent "
+              />
+            </div>
+            <div className="flex gap-2">
+              <div className="w-[344px] h-14 bg-zinc-950 flex items-center px-4 py-2.5 gap-2.5 rounded-lg">
+                <Calendar className="size-5 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="20 de Agosto"
+                  className="text-zinc-100 outline-none bg-transparent placeholder:text-zinc-100"
+                />
+              </div>
+              <div className="h-14 bg-zinc-950 flex items-center px-4 py-2.5 gap-2.5 rounded-lg">
+                <Clock className="size-5 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Horário"
+                  className="text-zinc-100 outline-none bg-transparent"
+                />
+              </div>
+            </div>
+            <button className="w-full bg-lime-300 text-lime-950 mt-3 h-11 rounded-lg">
+              Salvar atividade
+            </button>
+          </div>
+        </div>
+      </div>)}
+
+
+      {addNewLinkModal && (<div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+        <div className="w-[540px] h-72 px-6 py-5 bg-zinc-900 rounded-xl space-y-5">
+          <header>
+            <div className="w-full flex items-center justify-between">
+              <h2 className="text-white text-lg font-semibold">
+                Cadastrar link
+              </h2>
+              <button onClick={toggleAddNewLinkModal}>
+                <X size={20} className="text-zinc-400" />
+              </button>
+            </div>
+          </header>
+          <div className="space-y-2">
+            <div className="h-full flex flex-col gap-2">
+              <div className="w-full h-14 bg-zinc-950 flex items-center px-4 py-2.5 gap-2.5 rounded-lg">
+                <Tag className="size-5 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Qual a atividade?"
+                  className="text-zinc-400 outline-none bg-transparent "
+                />
+              </div>
+              <div className="w-full h-14 bg-zinc-950 flex items-center px-4 py-2.5 gap-2.5 rounded-lg">
+                <Link2 className="size-5 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Qual a atividade?"
+                  className="text-zinc-400 outline-none bg-transparent "
+                />
+              </div>
+              
+              <button className="w-full bg-lime-300 text-lime-950 mt-3 h-11 rounded-lg self-end">
+                Salvar atividade
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>)}
     </div>
   );
 }
